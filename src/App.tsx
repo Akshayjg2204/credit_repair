@@ -157,7 +157,7 @@ const CreditRepairWebsite = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#FFF8DE] via-white to-[#FFF2C6] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-900 dark:text-white transition-colors duration-300">
+        <div className="min-h-screen bg-gradient-to-br from-[#FFF8DE] via-white to-[#FFF2C6] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-900 dark:text-white transition-colors duration-300 overflow-x-hidden">
             {/* Parallax Scrolling Effect - Hero */}
             <CreditCardParallax />
 

@@ -82,7 +82,7 @@ export function CreditCardParallax() {
     }, []);
 
     return (
-        <div className="relative w-full z-10" ref={parallaxRef} onMouseMove={handleMouseMove}>
+        <div className="relative w-full z-10 overflow-hidden" ref={parallaxRef} onMouseMove={handleMouseMove}>
             <section className="relative h-[130vh] overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-[#050A14] via-[#0F1629] to-[#1E253A] dark:from-black dark:via-[#020617] dark:to-[#0F172A]"></div>
 
@@ -115,79 +115,68 @@ export function CreditCardParallax() {
                                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] rounded-full bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 blur-[100px] mix-blend-screen"
                             />
 
-                            {/* Layer 3: Main Title - BEHIND the card (filled with color + outline) */}
-                            <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-center pointer-events-none">
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 1 }}
-                                >
-                                    <h2
-                                        className="text-[12rem] md:text-[17rem] lg:text-[24rem] font-bold tracking-tighter leading-[0.85] text-white uppercase"
-                                        style={{
-                                            WebkitTextStroke: '3px rgba(255,255,255,0.5)',
-                                        }}
+                            {/* Unified Scale/Position Container for Perfect Alignment */}
+                            <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                                {/* Layer 3: Back Text (Filled) */}
+                                <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none whitespace-nowrap">
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 1 }}
                                     >
-                                        Future
-                                        <br />
-                                        <span
-                                            className="bg-gradient-to-r from-[#AAC4F5] via-[#8CA9FF] to-[#6366f1] bg-clip-text text-transparent"
-                                            style={{ WebkitTextStroke: '0px transparent' }}
+                                        <h2
+                                            className="text-center text-[5rem] sm:text-[8rem] md:text-[14rem] lg:text-[20rem] font-bold tracking-tighter leading-[1.1] md:leading-[0.85] text-white uppercase [-webkit-text-stroke:0px] md:[-webkit-text-stroke:3px_rgb(255,255,255)]"
                                         >
-                                            Finance
-                                        </span>
-                                    </h2>
-                                </motion.div>
-                            </div>
+                                            Future
+                                            <br />
+                                            <span
+                                                className="bg-gradient-to-r from-[#AAC4F5] via-[#8CA9FF] to-[#6366f1] bg-clip-text text-transparent [-webkit-text-stroke:0px] md:[-webkit-text-stroke:3px_rgb(140,169,255)]"
+                                            >
+                                                Finance
+                                            </span>
+                                        </h2>
+                                    </motion.div>
+                                </div>
 
-                            {/* Layer 4: Interactive 3D Card */}
-                            <div
-                                data-parallax-layer="4"
-                                className="absolute top-[42%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
-                            >
-                                <motion.div
-                                    initial={{ scale: 0.8, opacity: 0, rotateX: 20 }}
-                                    animate={{ scale: 1, opacity: 1, rotateX: 0 }}
-                                    transition={{ duration: 1.2, delay: 0.5, type: 'spring' }}
-                                    className="scale-[1.2] md:scale-[1.5] lg:scale-[1.8] drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-                                    style={{ x: moveX, y: moveY }}
-                                >
-                                    <VerificationCard
-                                        backgroundImage="https://images.unsplash.com/photo-1605218427306-022ba95190c1?q=80&w=2670&auto=format&fit=crop"
-                                        idNumber="3759 876543 21001"
-                                        label=""
-                                        name="AKSHAY GAIKWAD"
-                                        validThru="12/30"
-                                    />
-                                </motion.div>
-                            </div>
-
-                            {/* Layer 5: Outline Text - IN FRONT of the card (outline only, hollow inside) */}
-                            <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 text-center pointer-events-none">
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 1 }}
-                                >
-                                    <h2
-                                        className="text-[12rem] md:text-[17rem] lg:text-[24rem] font-bold tracking-tighter leading-[0.85] uppercase"
-                                        style={{
-                                            WebkitTextStroke: '3px rgba(255,255,255,0.8)',
-                                            color: 'transparent',
-                                        }}
+                                {/* Layer 4: Interactive Card */}
+                                <div className="relative z-20">
+                                    <motion.div
+                                        initial={{ scale: 0.8, opacity: 0, rotateX: 20 }}
+                                        animate={{ scale: 1, opacity: 1, rotateX: 0 }}
+                                        transition={{ duration: 1.2, delay: 0.5, type: 'spring' }}
+                                        className="scale-[0.6] sm:scale-[0.9] md:scale-[1.2] lg:scale-[1.8] drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+                                        style={{ x: moveX, y: moveY }}
                                     >
-                                        Future
-                                        <br />
-                                        <span
-                                            style={{
-                                                WebkitTextStroke: '3px rgba(140, 169, 255, 0.9)',
-                                                color: 'transparent',
-                                            }}
+                                        <VerificationCard
+                                            backgroundImage="https://images.unsplash.com/photo-1605218427306-022ba95190c1?q=80&w=2670&auto=format&fit=crop"
+                                            idNumber="3759 876543 21001"
+                                            label=""
+                                            name="AKSHAY GAIKWAD"
+                                            validThru="12/30"
+                                        />
+                                    </motion.div>
+                                </div>
+
+                                {/* Layer 5: Front Text (Outline) */}
+                                <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none whitespace-nowrap">
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 1 }}
+                                    >
+                                        <h2
+                                            className="text-center text-[5rem] sm:text-[8rem] md:text-[14rem] lg:text-[20rem] font-bold tracking-tighter leading-[1.1] md:leading-[0.85] uppercase [-webkit-text-stroke:1px_rgb(255,255,255)] md:[-webkit-text-stroke:3px_rgb(255,255,255)] text-transparent"
                                         >
-                                            Finance
-                                        </span>
-                                    </h2>
-                                </motion.div>
+                                            Future
+                                            <br />
+                                            <span
+                                                className="text-transparent [-webkit-text-stroke:1px_rgb(140,169,255)] md:[-webkit-text-stroke:3px_rgb(140,169,255)]"
+                                            >
+                                                Finance
+                                            </span>
+                                        </h2>
+                                    </motion.div>
+                                </div>
                             </div>
                         </div>
                     </div>
