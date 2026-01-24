@@ -155,8 +155,8 @@ export function CreditCardParallax() {
                                     <VerificationCard
                                         backgroundImage="https://images.unsplash.com/photo-1605218427306-022ba95190c1?q=80&w=2670&auto=format&fit=crop"
                                         idNumber="3759 876543 21001"
-                                        label="AMERICAN EXPRESS"
-                                        name="ALEXANDER SMITH"
+                                        label=""
+                                        name="AKSHAY GAIKWAD"
                                         validThru="12/30"
                                     />
                                 </motion.div>
