@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import React, { useRef } from "react";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { useRef } from "react";
 
 const CreditPathAnimation = () => {
     const ref = useRef<HTMLDivElement>(null);
@@ -64,7 +64,7 @@ const LinePath = ({
     scrollYProgress,
 }: {
     className: string;
-    scrollYProgress: any;
+    scrollYProgress: MotionValue<number>;
 }) => {
     const pathLength = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
 

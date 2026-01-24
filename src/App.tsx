@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion"
-import { Eye, EyeOff, Quote, Star, ArrowLeft, ArrowRight, Sparkles, Menu, X, Check, Shield, TrendingUp, Award, Users, Clock, Zap, Lock, DollarSign, BarChart3, Phone, Sun, Moon } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Quote, Star, ArrowLeft, ArrowRight, Sparkles, Menu, X, Check, Shield, TrendingUp, Award, Users, Clock, Zap, Lock, DollarSign, BarChart3, Phone, Sun, Moon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 import { Button } from "@/components/ui/button"
@@ -130,7 +130,7 @@ const CreditRepairWebsite = () => {
             y: 0,
             transition: {
                 duration: 0.8,
-                ease: [0.23, 0.86, 0.39, 0.96]
+                ease: [0.23, 0.86, 0.39, 0.96] as const
             }
         }
     }
