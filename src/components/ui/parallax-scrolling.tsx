@@ -125,7 +125,7 @@ export function CreditCardParallax() {
                                         transition={{ duration: 1 }}
                                     >
                                         <h2
-                                            className="text-center text-[5rem] sm:text-[8rem] md:text-[14rem] lg:text-[20rem] font-bold tracking-tighter leading-[1.1] md:leading-[0.85] text-white uppercase [-webkit-text-stroke:0px] md:[-webkit-text-stroke:3px_rgb(255,255,255)]"
+                                            className="text-center text-[5rem] sm:text-[8rem] md:text-[14rem] lg:text-[20rem] font-bold tracking-widest md:tracking-tighter leading-[1.1] md:leading-[0.85] text-white uppercase [-webkit-text-stroke:0px] md:[-webkit-text-stroke:3px_rgb(255,255,255)]"
                                         >
                                             Future
                                             <br />
@@ -165,7 +165,7 @@ export function CreditCardParallax() {
                                         transition={{ duration: 1 }}
                                     >
                                         <h2
-                                            className="text-center text-[5rem] sm:text-[8rem] md:text-[14rem] lg:text-[20rem] font-bold tracking-tighter leading-[1.1] md:leading-[0.85] uppercase [-webkit-text-stroke:1px_rgb(255,255,255)] md:[-webkit-text-stroke:3px_rgb(255,255,255)] text-transparent"
+                                            className="text-center text-[5rem] sm:text-[8rem] md:text-[14rem] lg:text-[20rem] font-bold tracking-widest md:tracking-tighter leading-[1.1] md:leading-[0.85] uppercase [-webkit-text-stroke:1px_rgb(255,255,255)] md:[-webkit-text-stroke:3px_rgb(255,255,255)] text-transparent"
                                         >
                                             Future
                                             <br />
