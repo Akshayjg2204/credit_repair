@@ -12,9 +12,9 @@ const CreditPathAnimation = () => {
     return (
         <section
             ref={ref}
-            className="mx-auto flex h-[300vh] w-screen flex-col items-center overflow-hidden bg-gradient-to-b from-[#FFF2C6] via-[#FFF8DE] to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 px-4 text-slate-900 dark:text-white"
+            className="mx-auto flex h-[300vh] w-screen flex-col items-center overflow-hidden bg-gradient-to-b from-[#FFF2C6] via-[#FFF8DE] to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 px-4 text-slate-900 dark:text-white relative"
         >
-            <div className="mt-42 relative flex w-fit flex-col items-center justify-center gap-5 text-center">
+            <div className="mt-32 relative flex w-fit flex-col items-center justify-center gap-5 text-center z-10">
                 <h1 className="relative z-10 text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight">
                     Your Path to <br /> Financial <br />
                     Freedom
@@ -29,7 +29,7 @@ const CreditPathAnimation = () => {
                 />
             </div>
 
-            <div className="rounded-4xl w-full translate-y-[150vh] bg-gradient-to-br from-[#AAC4F5] to-[#8CA9FF] p-10 md:p-20 text-slate-900">
+            <div className="rounded-4xl w-full mt-auto mb-[10vh] bg-gradient-to-br from-[#AAC4F5] to-[#8CA9FF] p-10 md:p-20 text-slate-900 z-10 relative">
                 <h1 className="text-center text-6xl md:text-8xl lg:text-[12vw] font-bold leading-tight tracking-tighter">
                     Elite Credit Repair
                 </h1>

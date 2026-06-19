@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Quote, Star, ArrowLeft, ArrowRight, Sparkles, Menu, X, Check, Shield, TrendingUp, Award, Users, Clock, Zap, Lock, DollarSign, BarChart3, Phone, Sun, Moon } from "lucide-react"
+import { Quote, Star, ArrowLeft, ArrowRight, Sparkles, Menu, X, Check, Shield, TrendingUp, Award, Users, Clock, Zap, Lock, DollarSign, BarChart3, Phone, Sun, Moon, Mail, MapPin, ArrowUp, Search, FileText, CheckCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 import { Button } from "@/components/ui/button"
@@ -66,13 +66,26 @@ const CreditRepairWebsite = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
     const [theme, setTheme] = React.useState<'light' | 'dark'>('light')
     const [showNav, setShowNav] = React.useState(false)
+    const [activeSection, setActiveSection] = React.useState('')
+    const [showFloatingCTA, setShowFloatingCTA] = React.useState(false)
 
     React.useEffect(() => {
         const handleScroll = () => {
             const scrollPosition = window.scrollY
             const viewportHeight = window.innerHeight
-            // Show nav after scrolling past the parallax section (about 1 viewport height)
             setShowNav(scrollPosition > viewportHeight * 0.8)
+            setShowFloatingCTA(scrollPosition > viewportHeight * 1.5)
+
+            // Active section detection
+            const sections = ['features', 'pricing', 'testimonials', 'faq', 'contact']
+            const viewCenter = scrollPosition + viewportHeight / 3
+            for (let i = sections.length - 1; i >= 0; i--) {
+                const el = document.getElementById(sections[i])
+                if (el && viewCenter >= el.offsetTop) {
+                    setActiveSection(sections[i])
+                    break
+                }
+            }
         }
 
         window.addEventListener('scroll', handleScroll)
@@ -158,12 +171,29 @@ const CreditRepairWebsite = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#FFF8DE] via-white to-[#FFF2C6] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-900 dark:text-white transition-colors duration-300 overflow-x-hidden">
-            {/* Parallax Scrolling Effect - Hero */}
+            {/* Parallax Scrolling Effect - Hero (z-0, sits behind everything) */}
             <CreditCardParallax />
+
+            {/* Floating CTA */}
+            <AnimatePresence>
+                {showFloatingCTA && (
+                    <motion.button
+                        initial={{ opacity: 0, scale: 0.5, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.5, y: 20 }}
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        className="fixed bottom-6 right-6 z-[60] p-4 rounded-full bg-gradient-to-r from-[#AAC4F5] to-[#8CA9FF] text-slate-900 shadow-2xl shadow-[#8CA9FF]/30 hover:shadow-[#8CA9FF]/50 transition-shadow"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <ArrowUp className="h-5 w-5" />
+                    </motion.button>
+                )}
+            </AnimatePresence>
 
             {/* Navigation */}
             <nav className={cn(
-                "fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-slate-950/80 backdrop-blur-xl border-b border-[#8CA9FF]/30 dark:border-[#8CA9FF]/20 transition-all duration-500",
+                "fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border-b border-[#8CA9FF]/20 dark:border-[#8CA9FF]/15 transition-all duration-500 shadow-lg shadow-black/5 dark:shadow-black/20",
                 showNav ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
             )}>
                 <div className="max-w-7xl mx-auto px-6 py-4">
@@ -178,11 +208,26 @@ const CreditRepairWebsite = () => {
                         </div>
 
                         <div className="hidden md:flex items-center gap-8">
-                            <a href="#features" className="text-sm text-slate-700 dark:text-slate-300 hover:text-[#8CA9FF] transition-colors">Features</a>
-                            <a href="#pricing" className="text-sm text-slate-700 dark:text-slate-300 hover:text-[#8CA9FF] transition-colors">Pricing</a>
-                            <a href="#testimonials" className="text-sm text-slate-700 dark:text-slate-300 hover:text-[#8CA9FF] transition-colors">Testimonials</a>
-                            <a href="#faq" className="text-sm text-slate-700 dark:text-slate-300 hover:text-[#8CA9FF] transition-colors">FAQ</a>
-                            <a href="#contact" className="text-sm text-slate-700 dark:text-slate-300 hover:text-[#8CA9FF] transition-colors">Contact</a>
+                            {['features', 'pricing', 'testimonials', 'faq', 'contact'].map((section) => (
+                                <a
+                                    key={section}
+                                    href={`#${section}`}
+                                    className={cn(
+                                        "text-sm transition-colors relative py-1",
+                                        activeSection === section
+                                            ? "text-[#8CA9FF] dark:text-[#AAC4F5] font-semibold"
+                                            : "text-slate-700 dark:text-slate-300 hover:text-[#8CA9FF]"
+                                    )}
+                                >
+                                    {section.charAt(0).toUpperCase() + section.slice(1)}
+                                    {activeSection === section && (
+                                        <motion.div
+                                            layoutId="activeNav"
+                                            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-[#AAC4F5] to-[#8CA9FF] rounded-full"
+                                        />
+                                    )}
+                                </a>
+                            ))}
                             <Button
                                 variant="ghost"
                                 size="icon"
@@ -228,8 +273,66 @@ const CreditRepairWebsite = () => {
                 </div>
             </nav>
 
+            {/* === ALL CONTENT BELOW: z-10 with solid backgrounds to sit ON TOP of parallax === */}
+            <div className="relative z-10">
+
+            {/* How It Works Section */}
+            <section className="py-24 bg-gradient-to-b from-[#FFF8DE] to-white dark:from-slate-950 dark:to-slate-900">
+                <div className="max-w-7xl mx-auto px-6">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={staggerContainer}
+                        className="text-center mb-16"
+                    >
+                        <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#AAC4F5]/20 border border-[#8CA9FF]/30 mb-6">
+                            <Sparkles className="h-4 w-4 text-[#8CA9FF]" />
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Simple Process</span>
+                        </motion.div>
+                        <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-4">
+                            How It Works
+                        </motion.h2>
+                        <motion.p variants={fadeInUp} className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                            Three simple steps to transform your credit score
+                        </motion.p>
+                    </motion.div>
+
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={staggerContainer}
+                        className="grid md:grid-cols-3 gap-8 relative"
+                    >
+                        {/* Connecting line — z-0 so it sits BEHIND the circles */}
+                        <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-0.5 bg-gradient-to-r from-[#AAC4F5]/50 via-[#8CA9FF] to-[#AAC4F5]/50 z-0" />
+
+                        {[
+                            { step: "01", icon: Search, title: "Analyze", description: "We pull your credit reports from all three bureaus and identify every inaccurate, unverifiable, or outdated negative item." },
+                            { step: "02", icon: FileText, title: "Dispute", description: "Our experts craft personalized dispute letters using proven legal strategies to challenge each negative item." },
+                            { step: "03", icon: CheckCircle, title: "Restore", description: "Watch your score climb as items are removed. We monitor progress and continue disputes until your credit is restored." }
+                        ].map((item, index) => (
+                            <motion.div key={index} variants={fadeInUp} className="text-center relative z-10">
+                                <motion.div
+                                    className="w-32 h-32 mx-auto mb-8 rounded-full bg-[#FFF8DE] dark:bg-slate-950 bg-gradient-to-br from-[#AAC4F5]/30 to-[#8CA9FF]/20 dark:from-[#8CA9FF]/15 dark:to-[#AAC4F5]/10 border-2 border-[#8CA9FF]/40 flex items-center justify-center relative"
+                                    whileHover={{ scale: 1.1, borderColor: "rgba(140, 169, 255, 0.8)" }}
+                                >
+                                    <item.icon className="h-12 w-12 text-[#8CA9FF] dark:text-[#AAC4F5]" />
+                                    <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-r from-[#AAC4F5] to-[#8CA9FF] flex items-center justify-center text-sm font-bold text-slate-900">
+                                        {item.step}
+                                    </div>
+                                </motion.div>
+                                <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
+                                <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-xs mx-auto">{item.description}</p>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </div>
+            </section>
+
             {/* Proof Section */}
-            <section className="py-20 bg-gradient-to-b from-[#FFF8DE]/50 to-white dark:from-slate-950 dark:to-slate-900">
+            <section className="py-20 bg-gradient-to-b from-white to-[#FFF8DE]/50 dark:from-slate-900 dark:to-slate-950">
                 <div className="max-w-7xl mx-auto px-6">
                     <motion.div
                         initial="hidden"
@@ -746,7 +849,7 @@ const CreditRepairWebsite = () => {
 
             {/* Contact Section & Footer would go here (omitted for brevity, can be added if requested) */}
             {/* Restoring Contact Section */}
-            <section id="contact" className="py-20">
+            <section id="contact" className="py-20 bg-gradient-to-b from-white to-[#FFF8DE]/50 dark:from-slate-900 dark:to-slate-950">
                 <div className="max-w-7xl mx-auto px-6">
                     <motion.div
                         initial="hidden"
@@ -772,16 +875,38 @@ const CreditRepairWebsite = () => {
                             className="space-y-8"
                         >
                             <div className="flex items-start gap-4">
-                                <Phone className="h-6 w-6 text-[#8CA9FF] dark:text-[#AAC4F5]" />
+                                <div className="h-12 w-12 rounded-full bg-[#AAC4F5]/20 flex items-center justify-center flex-shrink-0">
+                                    <Phone className="h-6 w-6 text-[#8CA9FF] dark:text-[#AAC4F5]" />
+                                </div>
                                 <div>
                                     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Phone</h3>
                                     <p className="text-slate-700 dark:text-slate-400">Call us Monday-Friday, 9am-6pm EST</p>
-                                    <a href="tel:+18005551234" className="text-[#8CA9FF] dark:text-[#AAC4F5] hover:text-[#AAC4F5] dark:hover:text-[#8CA9FF]">
+                                    <a href="tel:+18005551234" className="text-[#8CA9FF] dark:text-[#AAC4F5] hover:text-[#AAC4F5] dark:hover:text-[#8CA9FF] font-medium">
                                         (800) 555-1234
                                     </a>
                                 </div>
                             </div>
-                            {/* ... Other contact details ... */}
+                            <div className="flex items-start gap-4">
+                                <div className="h-12 w-12 rounded-full bg-[#AAC4F5]/20 flex items-center justify-center flex-shrink-0">
+                                    <Mail className="h-6 w-6 text-[#8CA9FF] dark:text-[#AAC4F5]" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Email</h3>
+                                    <p className="text-slate-700 dark:text-slate-400">We'll respond within 24 hours</p>
+                                    <a href="mailto:support@elitecreditrepair.com" className="text-[#8CA9FF] dark:text-[#AAC4F5] hover:text-[#AAC4F5] dark:hover:text-[#8CA9FF] font-medium">
+                                        support@elitecreditrepair.com
+                                    </a>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-4">
+                                <div className="h-12 w-12 rounded-full bg-[#AAC4F5]/20 flex items-center justify-center flex-shrink-0">
+                                    <MapPin className="h-6 w-6 text-[#8CA9FF] dark:text-[#AAC4F5]" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Office</h3>
+                                    <p className="text-slate-700 dark:text-slate-400">123 Financial District<br />New York, NY 10004</p>
+                                </div>
+                            </div>
                         </motion.div>
                         <motion.div
                             initial={{ opacity: 0, x: 50 }}
@@ -791,6 +916,7 @@ const CreditRepairWebsite = () => {
                             <Card className="bg-gradient-to-br from-white to-[#FFF8DE]/50 dark:from-slate-800/50 dark:to-slate-900/50 border-[#AAC4F5]/30 shadow-lg">
                                 <CardHeader>
                                     <CardTitle className="text-slate-900 dark:text-white">Send us a message</CardTitle>
+                                    <CardDescription className="text-slate-600 dark:text-slate-400">Fill out the form and we'll get back to you shortly.</CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <div className="grid grid-cols-2 gap-4">
@@ -812,7 +938,17 @@ const CreditRepairWebsite = () => {
                                         placeholder="Email"
                                         className="bg-slate-50 dark:bg-slate-900/50 border-[#AAC4F5]/40 dark:border-slate-700 text-slate-900 dark:text-white focus:border-[#8CA9FF]"
                                     />
-                                    <Button className="w-full bg-gradient-to-r from-[#AAC4F5] to-[#8CA9FF] text-slate-900 hover:from-[#8CA9FF] hover:to-[#AAC4F5]">
+                                    <Input
+                                        type="tel"
+                                        placeholder="Phone Number"
+                                        className="bg-slate-50 dark:bg-slate-900/50 border-[#AAC4F5]/40 dark:border-slate-700 text-slate-900 dark:text-white focus:border-[#8CA9FF]"
+                                    />
+                                    <textarea
+                                        placeholder="Tell us about your credit situation..."
+                                        rows={4}
+                                        className="flex w-full rounded-md border border-[#AAC4F5]/40 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 px-3 py-2 text-base text-slate-900 dark:text-white placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8CA9FF]/50 focus-visible:border-[#8CA9FF] transition-colors resize-none"
+                                    />
+                                    <Button className="w-full bg-gradient-to-r from-[#AAC4F5] to-[#8CA9FF] text-slate-900 hover:from-[#8CA9FF] hover:to-[#AAC4F5] text-base py-6">
                                         Get Free Consultation
                                     </Button>
                                 </CardContent>
@@ -823,15 +959,88 @@ const CreditRepairWebsite = () => {
             </section>
 
             {/* Footer */}
-            <footer className="bg-gradient-to-b from-[#FFF8DE]/50 to-white dark:from-slate-900 dark:to-slate-950 border-t border-[#AAC4F5]/30 dark:border-[#8CA9FF]/20 py-12">
+            <footer className="bg-gradient-to-b from-[#0F172A] to-[#020617] text-white py-16 border-t border-[#8CA9FF]/20">
                 <div className="max-w-7xl mx-auto px-6">
-                    <p className="text-center text-slate-600 dark:text-slate-400 text-sm">
-                        © 2024 Elite Credit Repair. All rights reserved.
-                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                        {/* Brand */}
+                        <div className="lg:col-span-1">
+                            <div className="flex items-center gap-2 mb-4">
+                                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#AAC4F5] to-[#8CA9FF] flex items-center justify-center">
+                                    <Shield className="h-6 w-6 text-slate-900" />
+                                </div>
+                                <span className="text-xl font-bold bg-gradient-to-r from-[#AAC4F5] to-[#8CA9FF] bg-clip-text text-transparent">
+                                    Elite Credit Repair
+                                </span>
+                            </div>
+                            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                                Professional credit repair services helping thousands achieve financial freedom since 2018.
+                            </p>
+                        </div>
+
+                        {/* Quick Links */}
+                        <div>
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-[#AAC4F5] mb-4">Quick Links</h4>
+                            <ul className="space-y-3">
+                                {['Features', 'Pricing', 'Testimonials', 'FAQ', 'Contact'].map((link) => (
+                                    <li key={link}>
+                                        <a href={`#${link.toLowerCase()}`} className="text-slate-400 hover:text-[#AAC4F5] transition-colors text-sm">
+                                            {link}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Services */}
+                        <div>
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-[#AAC4F5] mb-4">Services</h4>
+                            <ul className="space-y-3">
+                                {['Credit Disputes', 'Score Monitoring', 'Identity Protection', 'Debt Validation', 'Credit Education'].map((service) => (
+                                    <li key={service}>
+                                        <span className="text-slate-400 text-sm">{service}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Contact Info */}
+                        <div>
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-[#AAC4F5] mb-4">Contact</h4>
+                            <ul className="space-y-3">
+                                <li className="flex items-center gap-2 text-slate-400 text-sm">
+                                    <Phone className="h-4 w-4 text-[#8CA9FF]" />
+                                    (800) 555-1234
+                                </li>
+                                <li className="flex items-center gap-2 text-slate-400 text-sm">
+                                    <Mail className="h-4 w-4 text-[#8CA9FF]" />
+                                    support@elitecreditrepair.com
+                                </li>
+                                <li className="flex items-center gap-2 text-slate-400 text-sm">
+                                    <MapPin className="h-4 w-4 text-[#8CA9FF]" />
+                                    New York, NY 10004
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Bottom bar */}
+                    <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <p className="text-slate-500 text-sm">
+                            © {new Date().getFullYear()} Elite Credit Repair. All rights reserved.
+                        </p>
+                        <div className="flex gap-6">
+                            <a href="#" className="text-slate-500 hover:text-[#AAC4F5] text-sm transition-colors">Privacy Policy</a>
+                            <a href="#" className="text-slate-500 hover:text-[#AAC4F5] text-sm transition-colors">Terms of Service</a>
+                            <a href="#" className="text-slate-500 hover:text-[#AAC4F5] text-sm transition-colors">Disclaimer</a>
+                        </div>
+                    </div>
                 </div>
             </footer>
+
+            </div>{/* Close z-10 content wrapper */}
         </div>
     )
 }
 
 export default CreditRepairWebsite
+

@@ -22,11 +22,10 @@ export function CreditCardParallax() {
     const smoothMouseY = useSpring(mouseY, { stiffness: 100, damping: 20 });
 
     // Map mouse position to small displacement values
-    const moveX = useTransform(smoothMouseX, [0, 1], [-20, 20]); // Move 20px left/right
-    const moveY = useTransform(smoothMouseY, [0, 1], [-20, 20]); // Move 20px up/down
+    const moveX = useTransform(smoothMouseX, [0, 1], [-20, 20]);
+    const moveY = useTransform(smoothMouseY, [0, 1], [-20, 20]);
 
     function handleMouseMove(e: React.MouseEvent) {
-        // Normalize mouse position from 0 to 1
         const { clientX, clientY } = e;
         const { innerWidth, innerHeight } = window;
         mouseX.set(clientX / innerWidth);
@@ -36,39 +35,35 @@ export function CreditCardParallax() {
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
 
-        const triggerElement = parallaxRef.current?.querySelector('[data-parallax-layers]');
+        const parallaxLayers = parallaxRef.current?.querySelector('[data-parallax-layers]');
 
-        if (triggerElement) {
+        if (parallaxLayers) {
+            // Layer 1: Background - moves slowly
+            const layer1 = parallaxLayers.querySelectorAll('[data-parallax-layer="1"]');
+            const layer2 = parallaxLayers.querySelectorAll('[data-parallax-layer="2"]');
+            const layer3 = parallaxLayers.querySelectorAll('[data-parallax-layer="3"]');
+            const layer4 = parallaxLayers.querySelectorAll('[data-parallax-layer="4"]');
+
             const tl = gsap.timeline({
                 scrollTrigger: {
-                    trigger: triggerElement,
+                    trigger: parallaxLayers,
                     start: "0% 0%",
                     end: "100% 0%",
                     scrub: 0
                 }
             });
 
-            // Adjusted layers for better depth perception
-            const layers = [
-                { layer: "1", yPercent: 40, scale: 1.1 }, // Background moves slowly
-                { layer: "2", yPercent: 30, scale: 1.2 }, // Glow moves slightly faster to create volume
-                { layer: "3", yPercent: 15, scale: 1 },   // Text stays relatively stable but moves up
-                { layer: "4", yPercent: -20, scale: 1 }   // Card moves UP to cross the text visually
-            ];
-
-            layers.forEach((layerObj, idx) => {
-                tl.to(
-                    triggerElement.querySelectorAll(`[data-parallax-layer="${layerObj.layer}"]`),
-                    {
-                        yPercent: layerObj.yPercent,
-                        ease: "none"
-                    },
-                    idx === 0 ? undefined : "<"
-                );
-            });
+            if (layer1.length) tl.to(layer1, { yPercent: 40, ease: "none" });
+            if (layer2.length) tl.to(layer2, { yPercent: 30, ease: "none" }, "<");
+            if (layer3.length) tl.to(layer3, { yPercent: 15, ease: "none" }, "<");
+            if (layer4.length) tl.to(layer4, { yPercent: -20, ease: "none" }, "<");
         }
 
-        const lenis = new Lenis();
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+        });
 
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add((time: number) => { lenis.raf(time * 1000); });
@@ -76,13 +71,18 @@ export function CreditCardParallax() {
 
         return () => {
             ScrollTrigger.getAll().forEach((st: any) => st.kill());
-            if (triggerElement) gsap.killTweensOf(triggerElement);
             lenis.destroy();
         };
     }, []);
 
     return (
-        <div className="relative w-full z-10 overflow-hidden" ref={parallaxRef} onMouseMove={handleMouseMove}>
+        <div
+            className="relative w-full z-0 overflow-hidden"
+            ref={parallaxRef}
+            onMouseMove={handleMouseMove}
+        >
+            {/* The parallax hero is NOT sticky — it scrolls away normally.
+                Content sections below have z-10+ and solid backgrounds to cover it. */}
             <section className="relative h-[130vh] overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-[#050A14] via-[#0F1629] to-[#1E253A] dark:from-black dark:via-[#020617] dark:to-[#0F172A]"></div>
 
@@ -91,6 +91,8 @@ export function CreditCardParallax() {
                     <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-400 rounded-full blur-[2px] animate-pulse" style={{ animationDuration: '3s' }} />
                     <div className="absolute top-3/4 right-1/3 w-1 h-1 bg-purple-400 rounded-full blur-[1px] animate-pulse" style={{ animationDuration: '4s' }} />
                     <div className="absolute top-1/2 left-1/2 w-1.5 h-1.5 bg-white rounded-full blur-[2px] animate-pulse" style={{ animationDuration: '5s' }} />
+                    <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-indigo-300 rounded-full blur-[1px] animate-pulse" style={{ animationDuration: '6s' }} />
+                    <div className="absolute top-2/3 left-1/3 w-1.5 h-1.5 bg-blue-300 rounded-full blur-[1px] animate-pulse" style={{ animationDuration: '7s' }} />
                 </div>
 
                 <div className="relative h-full">
@@ -200,8 +202,8 @@ export function CreditCardParallax() {
                         </div>
                     </motion.div>
 
-                    {/* Seamless fade to next section */}
-                    <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-[#FFF8DE] dark:from-slate-950 via-[#FFF8DE]/80 dark:via-slate-900/80 to-transparent pointer-events-none" />
+                    {/* Seamless fade to next section — stronger gradient to fully mask the edge */}
+                    <div className="absolute bottom-0 left-0 right-0 h-72 bg-gradient-to-t from-[#FFF8DE] dark:from-slate-950 via-[#FFF8DE]/90 dark:via-slate-950/90 to-transparent pointer-events-none z-40" />
                 </div>
             </section>
         </div>

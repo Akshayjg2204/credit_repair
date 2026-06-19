@@ -121,7 +121,12 @@
     @apply border-border outline-ring/50;
   }
 
-  html,
+  html {
+    @apply bg-background text-foreground overflow-x-hidden max-w-[100vw];
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
   body {
     @apply bg-background text-foreground overflow-x-hidden max-w-[100vw];
   }
