@@ -25,6 +25,21 @@
 
 ---
 
+## 🎥 Platform Walkthrough & Interaction Preview
+
+<div align="center">
+  <a href="https://creditrepairweb.netlify.app">
+    <img src="./public/credit_repair_walkthrough.gif" alt="Credit Repair Platform & Interaction Preview" width="100%" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);" />
+  </a>
+  <p align="center">
+    <sub><b>✨ Autoplaying preview of interactive credit milestones, 3D card parallax, and smooth scroll dynamics.</b></sub><br>
+    <b><a href="https://creditrepairweb.netlify.app">🚀 Launch Live Web App</a></b> &nbsp;•&nbsp; 
+    <b><a href="./public/demo.mp4">📥 Download / Watch Full 60 FPS HD Video (MP4)</a></b>
+  </p>
+</div>
+
+---
+
 ## ✨ Design & Engineering Highlights
 
 - **📈 SVG Scroll-Driven Path Animation:** Implements custom SVG path tracing that visually maps user credit growth milestones as the viewport scrolls.
