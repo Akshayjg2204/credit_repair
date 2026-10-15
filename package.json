@@ -10,16 +10,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/streamlinefrontend/credit_repair.git"
+    "url": "https://github.com/Akshayjg2204/credit_repair.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/streamlinefrontend/credit_repair/issues"
-  },
-  "homepage": "https://github.com/streamlinefrontend/credit_repair#readme",
-  "description": "",
+  "keywords": [
+    "react",
+    "vite",
+    "framer-motion",
+    "gsap",
+    "tailwindcss",
+    "lenis-scroll"
+  ],
+  "author": "Akshay Gaikwad (https://stream-line.dev)",
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "@types/node": "^25.0.10",
