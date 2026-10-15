@@ -7,6 +7,8 @@
   </p>
 
   <p align="center">
+    <a href="https://creditrepairweb.netlify.app" target="_blank"><img src="https://img.shields.io/badge/Live_Demo-creditrepairweb.netlify.app-00C7B7?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Demo" /></a>
+    &nbsp;
     <a href="https://github.com/Akshayjg2204/credit_repair"><img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white" alt="Repository" /></a>
   </p>
 
